@@ -1,9 +1,10 @@
+import { writeFileSync } from "fs";
 import ts from "typescript";
 
 type TransfromRule = keyof typeof transfromRules;
 const transfromRules = {
   snake: (text: string): string => {
-    return text.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+    return text.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
   },
   camel: (text: string): string => {
     return text.replace(/([_][a-z])/g, (group) =>
@@ -13,7 +14,7 @@ const transfromRules = {
 } as const;
 
 export class CaseTransformer {
-  to: (input: string) => string;
+  private to: (input: string) => string;
 
   constructor(rule: TransfromRule) {
     if (!(rule in transfromRules)) {
@@ -23,7 +24,7 @@ export class CaseTransformer {
     this.to = transfromRules[rule];
   }
 
-  getTransformer(): ts.TransformerFactory<ts.SourceFile> {
+  private getTransformer(): ts.TransformerFactory<ts.SourceFile> {
     return (context) => (sourceFile) => {
       const visitor = (node: ts.Node): ts.Node => {
         if (ts.isIdentifier(node)) {
@@ -52,7 +53,19 @@ export class CaseTransformer {
 
   print(sourceFilePath: string) {
     const result = this.exec(sourceFilePath);
+    console.log(result.transformed[0]);
     const printer = ts.createPrinter();
     console.log(printer.printFile(result.transformed[0]));
+  }
+
+  replaceFile(sourceFilePath: string) {
+    const result = this.exec(sourceFilePath);
+    // console.log(result.transformed[0]);
+    const printer = ts.createPrinter();
+    writeFileSync(
+      sourceFilePath,
+      printer.printFile(result.transformed[0]),
+      "utf8"
+    );
   }
 }

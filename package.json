@@ -1,0 +1,29 @@
+{
+  "name": "js-case-converter",
+  "version": "1.0.0",
+  "description": "convert camel-snake case on both way",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "keywords": [
+    "converter",
+    "camelCase",
+    "camel_case",
+    "snakeCase",
+    "snake_case"
+  ],
+  "author": "marades",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "reflect-metadata": "^0.1.13"
+  }
+}

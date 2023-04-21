@@ -6,6 +6,7 @@ type RunOption = {
   case: TransfromRules;
   print: boolean;
 };
+
 const bootstrap = () => {
   const program = commander.program;
   program

@@ -1,7 +1,7 @@
 import { writeFileSync } from "fs";
 import ts from "typescript";
 
-type TransfromRule = keyof typeof transfromRules;
+export type TransfromRules = keyof typeof transfromRules;
 const transfromRules = {
   snake: (text: string): string => {
     return text.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
@@ -13,15 +13,15 @@ const transfromRules = {
   },
 } as const;
 
-export class CaseTransformer {
+export default class CaseTransformer {
   private to: (input: string) => string;
 
-  constructor(rule: TransfromRule) {
-    if (!(rule in transfromRules)) {
+  constructor(targetCase: TransfromRules) {
+    if (!(targetCase in transfromRules)) {
       throw "Invalid Case Rule";
     }
 
-    this.to = transfromRules[rule];
+    this.to = transfromRules[targetCase];
   }
 
   private getTransformer(): ts.TransformerFactory<ts.SourceFile> {
@@ -53,14 +53,12 @@ export class CaseTransformer {
 
   print(sourceFilePath: string) {
     const result = this.exec(sourceFilePath);
-    console.log(result.transformed[0]);
     const printer = ts.createPrinter();
     console.log(printer.printFile(result.transformed[0]));
   }
 
   replaceFile(sourceFilePath: string) {
     const result = this.exec(sourceFilePath);
-    // console.log(result.transformed[0]);
     const printer = ts.createPrinter();
     writeFileSync(
       sourceFilePath,

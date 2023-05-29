@@ -21,5 +21,5 @@ $ case-converter run -c snake -p targetFile.ts
 - [x] Single File Transform
 - [x] Camel Case -> Snake Case
 - [x] Snake Case -> Camel Case
-- [ ] Directory Support
+- [x] Directory Support
 - [ ] Transform Rule Custom

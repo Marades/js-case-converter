@@ -1,6 +1,6 @@
 {
   "name": "js-case-converter",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Convert code! You can convert code by camel/snake case you want immediately",
   "bin": {
     "case-converter": "cli.js"
